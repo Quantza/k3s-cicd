@@ -43,7 +43,7 @@
       command: kubectl apply -f /tmp/ingress-routes.yaml --wait
     
     - name: Create Namespace for nginx welcome service (if doesn't exist)
-      command: tmpNamespace="nginx-welcome" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
+      command: tmpNamespace="welcome-nginx" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
     
     - name: Create nginx ingress welcome service (test)
       command: kubectl apply -f manifests/ingress-service-nginx.yaml --wait
