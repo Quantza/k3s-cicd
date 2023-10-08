@@ -1,0 +1,26 @@
+---
+- name: Deploy external-dns (k8s)
+  hosts: localhost
+  become: true
+  vars:
+    domain_name_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default(algorisma.com) }}"
+    domain_zone_id_prod: "{{ lookup('env', 'DOMAIN_ZONE_ID_PROD') | default("ac4650f932d9ca902affbcfc0ee53c30") }}"
+    cf_api_email_prod: "{{ lookup('env', 'CF_API_EMAIL_PROD') }}"
+    cf_api_key_prod: "{{ lookup('env', 'CF_API_KEY_PROD') }}"
+  tasks:
+    - name: Create RBAC rules + deployment manifest
+      template:
+        src: manifests/external-dns-deployment.yaml.j2
+        dest: /tmp/external-dns-deployment.yaml
+        mode: '0644'
+    
+    - name: Create Namespace (if doesn't exist)
+      command: tmpNamespace="external-dns" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
+
+    - name: Apply CRD(s)
+      command: kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/docs/contributing/crd-source/crd-manifest.yaml
+
+    - name: Apply RBAC rules + deployment manifest
+      command: kubectl apply -f /tmp/external-dns-deployment.yaml
+    
+    

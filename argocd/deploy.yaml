@@ -1,0 +1,15 @@
+---
+- name: Deploy argocd (k8s)
+  hosts: localhost
+  become: true
+  vars:
+  tasks:
+    - name: Create Namespace (if doesn't exist)
+      command: tmpNamespace="argocd" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
+    
+    - name: Install manifest
+      command: kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    
+    - name: Patch service to LoadBalancer type
+      command: kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
