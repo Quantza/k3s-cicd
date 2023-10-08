@@ -1,0 +1,30 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: localproduction
+  namespace: default
+spec:
+  secretName: localproduction-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "*.local.{{ domain_zone_prod }}"
+  dnsNames:
+  - "local.{{ domain_zone_prod }}"
+  - "*.local.{{ domain_zone_prod }}"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: localstaging
+  namespace: default
+spec:
+  secretName: localstaging-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: "*.local.{{ domain_zone_staging }}"
+  dnsNames:
+  - "local.{{ domain_zone_staging }}"
+  - "*.local.{{ domain_zone_staging }}s"

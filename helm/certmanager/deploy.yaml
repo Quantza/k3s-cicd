@@ -1,0 +1,45 @@
+---
+- name: Deploy certmanager (k8s/helm)
+  hosts: localhost
+  become: true
+  vars:
+    domain_name_staging: "{{ lookup('env', 'DOMAIN_ZONE_STAGING') | default(algorisma.com) }}"
+    domain_name_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default(algorisma.com) }}"
+    cf_token_prod: "{{ lookup('env', 'CF_TOKEN_PROD') }}"
+    cf_token_staging: "{{ lookup('env', 'CF_TOKEN_STAGING') }}"
+  tasks:
+    - name: Create Namespace (if doesn't exist)
+      command: tmpNamespace="cert-manager" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
+    
+    - name: Install CRD(s
+      command: kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.1/cert-manager.crds.yaml
+    
+    - name: Install/upgrade chart
+      command: helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --values=cert-values.yaml --version v1.13.1
+    
+    - name: Create certificate issuers manifest
+      template:
+        src: manifests/issuer.yaml.j2
+        dest: /tmp/issuer.yaml
+        mode: '0644'
+
+    - name: Apply certificate issuers manifest
+      command: kubectl apply -f /tmp/issuer.yaml
+    
+    - name: Create resolver/api manifest
+      template:
+        src: manifests/resolver_api.yaml.j2
+        dest: /tmp/resolver_api.yaml
+        mode: '0644'
+
+    - name: Apply resolver/api manifest
+      command: kubectl apply -f /tmp/resolver_api.yaml
+    
+    - name: Create local certs manifest
+      template:
+        src: manifests/local_certs.yaml.j2
+        dest: /tmp/local_certs.yaml
+        mode: '0644'
+
+    - name: Apply local certs manifest
+      command: kubectl apply -f /tmp/local_certs.yaml

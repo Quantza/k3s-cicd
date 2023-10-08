@@ -1,0 +1,16 @@
+---
+- name: Deploy switchboard (k8s)
+  hosts: localhost
+  become: true
+  vars:
+    domain_name_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default(algorisma.com) }}"
+  tasks:
+    - name: Create Helm values yaml, for install/upgrade
+      template:
+        src: switchboard-values.yaml.j2
+        dest: /tmp/switchboard-values.yaml
+        mode: '0644'
+    
+    - name: Install/upgrade
+      command: helm upgrade -i switchboard oci://ghcr.io/borchero/charts/switchboard --create-namespace --namespace switchboard -f /tmp/switchboard-values.yaml
+    

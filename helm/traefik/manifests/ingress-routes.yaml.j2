@@ -1,0 +1,44 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: my-harbor
+  namespace: traefik
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+      - websecure
+  routes:
+    # - match: Host(`www.{{ domain_zone_prod }}`) && PathPrefix(`/registry`)
+    - match: Host(`www.registry.{{ domain_zone_prod }}`)
+      kind: Rule
+      services:
+        - name: harbor
+          namespace: harbor
+  tls:
+    secretName: www-tls-certificate
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dashboard
+  namespace: traefik
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    # - match: Host(`www.{{ domain_zone_prod }}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+    - match: Host(`www.traefik.{{ domain_zone_prod }}`)
+      kind: Rule
+      middlewares:
+        - name: traefik-dashboard-basicauth
+          namespace: traefik
+      services:
+        - name: api@internal
+          kind: TraefikService
+      
+  tls:
+    secretName: www-tls-certificate
