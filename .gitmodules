@@ -1,0 +1,4 @@
+[submodule "submodules/deployKF"]
+	path = submodules/deployKF
+	url = https://github.com/deployKF/deployKF.git
+	branch = main
