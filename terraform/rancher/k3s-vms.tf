@@ -17,12 +17,12 @@ resource "rancher2_machine_config_v2" "mission-ctrl-hrv-etcd-v2" {
     network_info = <<EOF
     {
         "interfaces": [{
-            "networkName": "${var.default-vlan.namespace}/${var.default-vlan.vlanid}"
+            "networkName": "${var.main-vlan.namespace}/${var.main-vlan.name}"
         }]
     }
     EOF
     ssh_user = var.vm_user.name
-    user_data = var.cloud-config-main-ubuntu22.04
+    user_data = var.cloud-config-main-ubuntu22-04.user_data
   }
 }
 
@@ -45,12 +45,12 @@ resource "rancher2_machine_config_v2" "mission-ctrl-hrv-cplane-v2" {
     network_info = <<EOF
     {
         "interfaces": [{
-            "networkName": "${var.default-vlan.namespace}/${var.default-vlan.vlanid}"
+            "networkName": "${var.main-vlan.namespace}/${var.main-vlan.name}"
         }]
     }
     EOF
     ssh_user = var.vm_user.name
-    user_data = var.cloud-config-main-ubuntu22.04
+    user_data = var.cloud-config-main-ubuntu22-04.user_data
   }
 }
 
@@ -78,11 +78,11 @@ resource "rancher2_machine_config_v2" "mission-ctrl-hrv-wrkr-v2" {
     network_info = <<EOF
     {
         "interfaces": [{
-            "networkName": "${var.default-vlan.namespace}/${var.default-vlan.vlanid}"
+            "networkName": "${var.main-vlan.namespace}/${var.main-vlan.name}"
         }]
     }
     EOF
     ssh_user = var.vm_user.name
-    user_data = var.cloud-config-main-ubuntu22.04
+    user_data = var.cloud-config-main-ubuntu22-04.user_data
   }
 }
