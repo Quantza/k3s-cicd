@@ -1,9 +1,9 @@
-resource "harvester_cloudinit_secret" "cloud-config-docker-ubuntu22.04" {
-  name      = "cloud-config-docker-ubuntu22.04"
+resource "harvester_cloudinit_secret" "cloud-config-docker-ubuntu22-04" {
+  name      = "cloud-config-docker-ubuntu22-04"
   namespace = "default"
 
   depends_on = [
-    harvester_ssh_key.vm_ssh_key
+    harvester_ssh_key.vm-sshkey
   ]
 
   user_data    = <<-EOF
@@ -37,17 +37,17 @@ resource "harvester_cloudinit_secret" "cloud-config-docker-ubuntu22.04" {
     - qemu-guest-agent
     ssh_authorized_keys:
       - >-
-        public_key content of harvester_ssh_key.vm_ssh_key
+        public_key content of harvester_ssh_key.vm-sshkey
     EOF
   network_data = ""
 }
 
-resource "harvester_cloudinit_secret" "cloud-config-main-ubuntu22.04" {
-  name      = "cloud-config-ubuntu22.04"
+resource "harvester_cloudinit_secret" "cloud-config-main-ubuntu22-04" {
+  name      = "cloud-config-ubuntu22-04"
   namespace = "default"
 
   depends_on = [
-    harvester_ssh_key.vm_ssh_key
+    harvester_ssh_key.vm-sshkey
   ]
 
   user_data    = <<-EOF
@@ -72,7 +72,7 @@ resource "harvester_cloudinit_secret" "cloud-config-main-ubuntu22.04" {
         - qemu-guest-agent.service
     ssh_authorized_keys:
       - >-
-        public_key content of harvester_ssh_key.vm_ssh_key
+        public_key content of harvester_ssh_key.vm-sshkey
     EOF
   network_data = ""
 }
