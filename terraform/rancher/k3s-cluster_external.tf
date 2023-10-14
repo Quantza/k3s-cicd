@@ -43,11 +43,6 @@ resource "rancher2_cluster_v2" "mission-ctrl-hrv" {
         name = rancher2_machine_config_v2.mission-ctrl-hrv-wrkr-v2.name
       }
     }
-    machine_selector_config {
-      config = {
-        cloud-provider-name = ""
-      }
-    }
     machine_global_config = <<EOF
 cni: "calico"
 disable-kube-proxy: false
