@@ -1,7 +1,7 @@
 # rke2_cluster_external.tf
 resource "rancher2_cluster_v2" "mission-ctrl-hrv" {
   name = "mission-ctrl-hrv"
-  fleet_namespace = "fleet-mission-ctrl"
+  # fleet_namespace = "fleet-mission-ctrl"
   kubernetes_version = "v1.26.8+k3s1"
   rke_config {
     machine_pools {
