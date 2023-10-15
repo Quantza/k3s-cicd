@@ -1,11 +1,11 @@
 # rke2_cluster_external.tf
-resource "rancher2_cluster_v2" "mission-ctrl-hrv" {
-  name = "mission-ctrl-hrv"
+resource "rancher2_cluster_v2" "mission-ctrl-hrv-clstr" {
+  name = "mission-ctrl-hrv-clstr"
   # fleet_namespace = "fleet-mission-ctrl"
   kubernetes_version = "v1.26.8+k3s1"
   rke_config {
     machine_pools {
-      name = "mission-ctrl-hrv-etcd"
+      name = "pool-etcd"
       cloud_credential_secret_name = rancher2_cloud_credential.mission-ctrl-hrv-external-creds.id
       control_plane_role = false
       etcd_role = true
@@ -18,7 +18,7 @@ resource "rancher2_cluster_v2" "mission-ctrl-hrv" {
       }
     }
     machine_pools {
-      name = "mission-ctrl-hrv-cplane"
+      name = "pool-cplane"
       cloud_credential_secret_name = rancher2_cloud_credential.mission-ctrl-hrv-external-creds.id
       control_plane_role = true
       etcd_role = false
@@ -31,7 +31,7 @@ resource "rancher2_cluster_v2" "mission-ctrl-hrv" {
       }
     }
     machine_pools {
-      name = "mission-ctrl-hrv-wrkr"
+      name = "pool-wrkr"
       cloud_credential_secret_name = rancher2_cloud_credential.mission-ctrl-hrv-external-creds.id
       control_plane_role = false
       etcd_role = false

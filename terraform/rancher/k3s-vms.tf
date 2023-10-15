@@ -8,7 +8,7 @@ resource "rancher2_machine_config_v2" "mission-ctrl-hrv-etcd-v2" {
     {
         "disks": [{
             "name": "rootdisk",
-            "imageName": "${var.vm_os_image.namespace}/${var.vm_os_image.id}",
+            "imageName": "${var.vm_os-image.namespace}/${var.vm_os-image.id}",
             "size": 32,
             "bootOrder": 1
         }]
@@ -36,7 +36,7 @@ resource "rancher2_machine_config_v2" "mission-ctrl-hrv-cplane-v2" {
     {
         "disks": [{
             "name": "rootdisk",
-            "imageName": "${var.vm_os_image.namespace}/${var.vm_os_image.id}",
+            "imageName": "${var.vm_os-image.namespace}/${var.vm_os-image.id}",
             "size": 20,
             "bootOrder": 1
         }]
@@ -64,7 +64,7 @@ resource "rancher2_machine_config_v2" "mission-ctrl-hrv-wrkr-v2" {
     {
         "disks": [{
             "name": "rootdisk",
-            "imageName": "${var.vm_os_image.namespace}/${var.vm_os_image.id}",
+            "imageName": "${var.vm_os-image.namespace}/${var.vm_os-image.id}",
             "size": 64,
             "bootOrder": 1
         },

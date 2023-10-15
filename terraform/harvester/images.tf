@@ -1,10 +1,10 @@
-resource "harvester_image" "os_image" {
-  name          = var.os_image.name
-  namespace     = var.os_image.namespace
-  display_name  = var.os_image.display_name
-  source_type   = var.os_image.source_type
-  url           = var.os_image.url
-  tags          = var.os_image.tags
+resource "harvester_image" "os-image" {
+  name          = var.os-image.name
+  namespace     = var.os-image.namespace
+  display_name  = var.os-image.display_name
+  source_type   = var.os-image.source_type
+  url           = var.os-image.url
+  tags          = var.os-image.tags
 }
 
 resource "harvester_image" "ubuntu22-04" {
