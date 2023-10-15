@@ -6,22 +6,22 @@ resource "harvester_cloudinit_secret" "cloud-config-docker-ubuntu22-04" {
     harvester_ssh_key.vm-sshkey
   ]
 
-  user_data    = <<-EOF
+  user_data    = <<EOF
     #cloud-config
     users:
-    - name: quantza
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    passwd: $6$tCgT7xBA.tJf62Mf$Lo7mC7QynUVu0b3CcQR0GP2ELOaNivVCCcWXwtR44SyDuf/MlpoHXimCMoRy1Dq4m7lpCeQy4Q1vaO//Z6wkx0
-    lock_passwd: false
-    shell: /bin/bash
+      - name: quantza
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        passwd: $6$tCgT7xBA.tJf62Mf$Lo7mC7QynUVu0b3CcQR0GP2ELOaNivVCCcWXwtR44SyDuf/MlpoHXimCMoRy1Dq4m7lpCeQy4Q1vaO//Z6wkx0
+        lock_passwd: false
+        shell: /bin/bash
 
     packages:
-    - curl
-    - wget
-    - btop
+      - curl
+      - wget
+      - btop
 
     write_files:
-    - path: /tmp/install_docker.sh
+      - path: /tmp/install_docker.sh
     content: |
         #!/bin/bash
         curl -fsSL https://get.docker.com -o get-docker.sh
@@ -29,12 +29,12 @@ resource "harvester_cloudinit_secret" "cloud-config-docker-ubuntu22-04" {
         permissions: '0755'
 
     runcmd:
-    - sudo apt update && sudo apt upgrade -y
-    - sudo /tmp/install_docker.sh
-    - - systemctl
-    - enable
-    - '--now'
-    - qemu-guest-agent
+      - sudo apt update && sudo apt upgrade -y
+      - sudo /tmp/install_docker.sh
+      - - systemctl
+        - enable
+        - '--now'
+        - qemu-guest-agent
     ssh_authorized_keys:
       - >-
         public_key content of harvester_ssh_key.vm-sshkey
@@ -50,23 +50,22 @@ resource "harvester_cloudinit_secret" "cloud-config-main-ubuntu22-04" {
     harvester_ssh_key.vm-sshkey
   ]
 
-  user_data    = <<-EOF
+  user_data    = <<EOF
     #cloud-config
     users:
-    - name: quantza
+      - name: quantza
         sudo: ALL=(ALL) NOPASSWD:ALL
-        passwd: >-
-        $6$tCgT7xBA.tJf62Mf$Lo7mC7QynUVu0b3CcQR0GP2ELOaNivVCCcWXwtR44SyDuf/MlpoHXimCMoRy1Dq4m7lpCeQy4Q1vaO//Z6wkx0
+        passwd: $6$tCgT7xBA.tJf62Mf$Lo7mC7QynUVu0b3CcQR0GP2ELOaNivVCCcWXwtR44SyDuf/MlpoHXimCMoRy1Dq4m7lpCeQy4Q1vaO//Z6wkx0
         lock_passwd: false
         shell: /bin/bash
     package_update: true
     packages:
-    - qemu-guest-agent
-    - curl
-    - wget
-    - btop
+      - qemu-guest-agent
+      - curl
+      - wget
+      - btop
     runcmd:
-    - - systemctl
+      - - systemctl
         - enable
         - '--now'
         - qemu-guest-agent.service
