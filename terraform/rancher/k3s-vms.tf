@@ -70,6 +70,7 @@ resource "rancher2_machine_config_v2" "mission-ctrl-hrv-wrkr-v2" {
         },
         {
             "name": "extradisk",
+            "storageClassName": "harvester-longhorn",
             "size": 16,
             "bootOrder": 2
         }]
