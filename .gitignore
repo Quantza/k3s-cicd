@@ -1,0 +1,15 @@
+terraform/harvester/variables.tf
+terraform/rancher/variables.tf
+terraform/harvester/*.yaml
+terraform/rancher/*.yaml
+
+terraform/.terraform
+
+terraform/harvester/.terraform
+terraform/rancher/.terraform
+
+terraform/harvester/.terraform.lock.hcl
+terraform/rancher/.terraform.lock.hcl
+
+terraform/harvester/terraform.tfstate*
+terraform/rancher/terraform.tfstate*
