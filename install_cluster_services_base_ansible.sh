@@ -52,5 +52,11 @@ cd ../../argocd
 
 ansible-playbook deploy.yaml
 
+#
+
+cd ../helm/harbor
+
+ansible-playbook deploy.yaml
+
 cd "$ROOT_DIR"
 
