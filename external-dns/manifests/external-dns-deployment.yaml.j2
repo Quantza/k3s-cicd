@@ -44,7 +44,7 @@ metadata:
   name: external-dns
   namespace: external-dns
 spec:
-  replicas: {{ lookup('env', 'REPLICAS_EXTERNAL_DNS') | default(1) }}
+  replicas: {{ num_replicas }}
   strategy:
     type: Recreate
   selector:

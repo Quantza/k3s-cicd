@@ -7,6 +7,7 @@
     domain_zone_id_prod: "{{ lookup('env', 'DOMAIN_ZONE_ID_PROD') | default("ac4650f932d9ca902affbcfc0ee53c30") }}"
     cf_api_email_prod: "{{ lookup('env', 'CF_API_EMAIL_PROD') }}"
     cf_api_key_prod: "{{ lookup('env', 'CF_API_KEY_PROD') }}"
+    num_replicas: "{{ lookup('env', 'REPLICAS_EXTERNAL_DNS') | default(1) }}"
   tasks:
     - name: Create RBAC rules + deployment manifest
       template:
