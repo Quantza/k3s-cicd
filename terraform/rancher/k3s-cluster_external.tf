@@ -47,6 +47,7 @@ resource "rancher2_cluster_v2" "mission-ctrl-hrv-clstr" {
 cni: "calico"
 disable-kube-proxy: false
 etcd-expose-metrics: false
+disable: ["traefik", "servicelb"]
 EOF
     upgrade_strategy {
       control_plane_concurrency = "10%"
