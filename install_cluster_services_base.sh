@@ -58,6 +58,18 @@ kubectl apply -f manifests/issuer.yaml -f manifests/resolver_api.yaml -f manifes
 
 #
 
+cd ../harbor
+
+helm repo add harbor https://helm.goharbor.io
+helm repo update
+
+helm upgrade -i harbor harbor/harbor \
+  --create-namespace \
+  --namespace production \
+  -f harbor-values.yaml
+
+#
+
 cd ../../external-dns
 
 tmpNamespace="external-dns"

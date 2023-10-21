@@ -1,0 +1,33 @@
+---
+- name: Deploy harbor (k8s/helm)
+  hosts: localhost
+  become: true
+  vars:
+    domain_name_staging: "{{ lookup('env', 'DOMAIN_ZONE_STAGING') | default(algorisma.com) }}"
+    domain_name_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default(algorisma.com) }}"
+    access_ip: "{{ lookup('env', 'HARBOR_ACCESS_IP') | default(222) }}"
+    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default(220) }}"
+  tasks:
+    - name: Add / Update harbor helm repo
+      ansible.builtin.shell: |
+        helm repo add harbor https://helm.goharbor.io
+        helm repo update
+
+        exit 0
+
+    - name: Create Helm values yaml, for install/upgrade
+      template:
+        src: manifests/harbor-values.yaml.j2
+        dest: /tmp/harbor-values.yaml
+        mode: '0644'
+    
+    - name: Install/upgrade chart
+      ansible.builtin.shell: |
+        helm upgrade -i harbor harbor/harbor \
+          --create-namespace \
+          --namespace production \
+          -f harbor-values.yaml
+
+        exit 0
+
+    
