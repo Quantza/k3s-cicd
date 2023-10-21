@@ -10,5 +10,5 @@ terraform {
 
 provider "harvester" {
     # Provide full path
-    kubeconfig = "${path.root}/mission-ctrl-harvester-kubeconfig.yaml"
+    kubeconfig = "${path.root}/mission-ctrl-hrv-kubeconfig.yaml"
 }
