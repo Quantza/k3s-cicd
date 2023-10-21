@@ -17,7 +17,7 @@
         mode: '0644'
     
     - name: Apply service pool manifest
-      command: kubectl apply -f /tmp/service-pool.yaml
+      command: kubectl apply -f /tmp/service-pool.yaml --wait
   
     
     

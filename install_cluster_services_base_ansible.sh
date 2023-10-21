@@ -26,16 +26,11 @@ cd ..
 
 cd helm/traefik
 
-helm repo add traefik https://helm.traefik.io/traefik
-helm repo update
 ansible-playbook deploy.yaml
 
 #
 
 cd ../certmanager
-
-helm repo add jetstack https://charts.jetstack.io
-helm repo update
 
 ansible-playbook deploy.yaml
 
@@ -53,17 +48,9 @@ ansible-playbook deploy.yaml
 
 #
 
-tmpNamespace="argocd"
-kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+cd ../../argocd
 
-#
-
-echo "Done."
-
-echo "Default pass for ArgoCD..."
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+ansible-playbook deploy.yaml
 
 cd "$ROOT_DIR"
 

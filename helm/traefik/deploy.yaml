@@ -9,6 +9,13 @@
     cf_token_staging: "{{ lookup('env', 'CF_TOKEN_STAGING') }}"
     lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default(220) }}"
   tasks:
+    - name: Add / Update traefik helm repo
+      ansible.builtin.shell: |
+        helm repo add traefik https://helm.traefik.io/traefik
+        helm repo update
+
+        exit 0
+    
     - name: Create Namespace (if doesn't exist)
       command: tmpNamespace="traefik" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
 
