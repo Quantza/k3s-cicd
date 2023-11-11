@@ -10,6 +10,16 @@ variable "os-image" {
         url = string
         tags = map(string)
     })
+
+    default = {
+        name      = "os-image"
+        namespace = "harvester-public"
+        display_name = "os-image.img"
+        description = ""
+        source_type  = "download"
+        url          = "https://cloud-images.ubuntu.com/releases/jammy/release/ubuntu-22.04-server-cloudimg-amd64.img"
+        tags         = {"format"="img"}
+    }
 }
 
 variable "main-vlan" {
@@ -36,7 +46,7 @@ variable "mgmt-vlan" {
         name = string
         namespace = string
     })
-
+    
     sensitive = true
 }
 
@@ -48,7 +58,7 @@ variable "untrusted-vlan" {
         name = string
         namespace = string
     })
-
+    
     sensitive = true
 }
 
@@ -60,6 +70,16 @@ variable "vm-sshkey" {
         namespace = string
         public_key = string
     })
-
+    
     sensitive = true
 }
+
+# variable "cloud_config_user_data" {
+#   description = "Cloud config user_data string for VM construction"
+#   type = string
+# }
+
+# variable "cloud_config_user_data_docker" {
+#   description = "Cloud config user_data string for VM construction"
+#   type = string
+# }
