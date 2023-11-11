@@ -1,15 +1,21 @@
-terraform/harvester/variables.tf
+terraform/harvester/prep/terraform.tfvars
+terraform/harvester/deploy-test-cluster/terraform.tfvars
 terraform/rancher/variables.tf
-terraform/harvester/*.yaml
+
+terraform/harvester/prep/*.yaml
+terraform/harvester/deploy-test-cluster/*.yaml
 terraform/rancher/*.yaml
 
 terraform/.terraform
 
-terraform/harvester/.terraform
+terraform/harvester/prep/.terraform
+terraform/harvester/deploy-test-cluster/.terraform
 terraform/rancher/.terraform
 
-terraform/harvester/.terraform.lock.hcl
+terraform/harvester/prep/.terraform.lock.hcl
+terraform/harvester/deploy-test-cluster/.terraform.lock.hcl
 terraform/rancher/.terraform.lock.hcl
 
-terraform/harvester/terraform.tfstate*
+terraform/harvester/prep/terraform.tfstate*
+terraform/harvester/deploy-test-cluster/terraform.tfstate*
 terraform/rancher/terraform.tfstate*
