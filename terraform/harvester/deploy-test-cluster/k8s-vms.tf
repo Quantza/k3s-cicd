@@ -31,7 +31,7 @@ resource "harvester_virtualmachine" "k8s-node" {
     bus        = "virtio"
     boot_order = 1
 
-    image       = harvester_image.os-image.id
+    image       = data.harvester_image.os-image.id
     auto_delete = true
   }
   
@@ -47,8 +47,8 @@ resource "harvester_virtualmachine" "k8s-node" {
   }
 
   cloudinit {
-    user_data_secret_name    = harvester_cloudinit_secret.cloud-config-main-ubuntu22-04.name
-    network_data_secret_name = harvester_cloudinit_secret.cloud-config-main-ubuntu22-04.name
+    user_data_secret_name    = data.harvester_cloudinit_secret.cloud-config-main-ubuntu22-04.name
+    network_data_secret_name = data.harvester_cloudinit_secret.cloud-config-main-ubuntu22-04.name
   }
 
   
