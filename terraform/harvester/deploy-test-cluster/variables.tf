@@ -1,13 +1,25 @@
-variable "proxmox_api" {
-    description = "API key for Proxmox Cluster"
+variable "os-image" {
+    description = "OS image for virtual machines"
 
     type = object({
-        access_key = string
-        secret_key = string
+        name = string
+        namespace = string
+        display_name = string
+        description = string
+        source_type = string
         url = string
+        tags = map(string)
     })
 
-    sensitive = true
+    default = {
+        name      = "os-image"
+        namespace = "harvester-public"
+        display_name = "os-image.img"
+        description = ""
+        source_type  = "download"
+        url          = "https://cloud-images.ubuntu.com/releases/jammy/release/ubuntu-22.04-server-cloudimg-amd64.img"
+        tags         = {"format"="img"}
+    }
 }
 
 variable "vm_user" {
