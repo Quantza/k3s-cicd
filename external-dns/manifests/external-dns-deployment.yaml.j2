@@ -64,7 +64,7 @@ spec:
         - --source=ingress
         - --source=crd
         - --source=service
-        - --domain-filter={{ domain_name_prod }} # (optional) limit to only example.com domains; change to match the zone created above.
+        - --domain-filter={{ domain_zone_prod }} # (optional) limit to only example.com domains; change to match the zone created above.
         - --zone-id-filter={{ domain_zone_id_prod }} # (optional) limit to a specific zone.
         - --provider=cloudflare
         # - --cloudflare-proxied # (optional) enable the proxy feature of Cloudflare (DDOS protection, CDN...)

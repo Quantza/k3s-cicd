@@ -89,7 +89,7 @@ certificateIssuer:
   create: false
   # -- This email should be set to something useful -- it is used to send emails when TLS
   #    certificates are about to expire.
-  email: info@{{ domain_name_prod }}
+  email: info@{{ domain_zone_prod }}
   # -- The solvers to use for verifying that the domain is owned in the ACME challenge.
   #    See: https://cert-manager.io/docs/configuration/acme/
   solvers: ["dns01"]

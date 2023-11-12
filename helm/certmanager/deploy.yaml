@@ -22,7 +22,7 @@
         exit 0
     - name: Install CRD(s)
       ansible.builtin.shell: |
-        kubectl --kubeconfig=../../k8s-home.yaml  apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.1/cert-manager.crds.yaml
+        kubectl --kubeconfig=../../k8s-home.yaml apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.1/cert-manager.crds.yaml
 
         exit 0
     - name: Install/upgrade chart
@@ -38,7 +38,7 @@
 
     - name: Apply certificate issuers manifest
       ansible.builtin.shell: |
-        kubectl --kubeconfig=../../k8s-home.yaml  apply -f /tmp/issuer.yaml
+        kubectl --kubeconfig=../../k8s-home.yaml apply -f /tmp/issuer.yaml
         
         exit 0
     - name: Create resolver/api manifest
@@ -49,7 +49,7 @@
 
     - name: Apply resolver/api manifest
       ansible.builtin.shell: |
-        kubectl --kubeconfig=../../k8s-home.yaml  apply -f /tmp/resolver_api.yaml
+        kubectl --kubeconfig=../../k8s-home.yaml apply -f /tmp/resolver_api.yaml
         
         exit 0    
     - name: Create local certs manifest

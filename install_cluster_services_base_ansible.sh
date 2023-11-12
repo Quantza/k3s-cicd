@@ -20,11 +20,10 @@ kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $t
 cd metallb
 
 ansible-playbook deploy.yaml
-cd ..
 
 #
 
-cd helm/traefik
+cd ../helm/traefik
 
 ansible-playbook deploy.yaml
 

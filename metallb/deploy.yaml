@@ -1,0 +1,23 @@
+---
+- name: Deploy metallb (k8s)
+  hosts: localhost
+  become: true
+  vars:
+    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('51', true) }}"
+    lb_end_ip: "{{ lookup('env', 'LB_START_IP') | default('75', true) }}"
+
+  tasks:
+    - name: Install LoadBalancer
+      command: kubectl apply --kubeconfig=../k8s-home.yaml -f https://raw.githubusercontent.com/metallb/metallb/v0.13.11/config/manifests/metallb-native.yaml
+    
+    - name: Create service pool manifest
+      template:
+        src: manifests/service-pool.yaml.j2
+        dest: /tmp/service-pool.yaml
+        mode: '0644'
+    
+    - name: Apply service pool manifest
+      command: kubectl apply --kubeconfig=../k8s-home.yaml -f /tmp/service-pool.yaml --wait
+  
+    
+    
