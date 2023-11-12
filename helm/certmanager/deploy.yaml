@@ -3,8 +3,8 @@
   hosts: localhost
   become: true
   vars:
-    domain_zone_staging: "{{ lookup('env', 'DOMAIN_ZONE_STAGING') | default(algorisma.com) }}"
-    domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default(algorisma.com) }}"
+    domain_zone_staging: "{{ lookup('env', 'DOMAIN_ZONE_STAGING') | default('algorisma.com', true) }}"
+    domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('algorisma.com', true) }}"
     cf_token_prod: "{{ lookup('env', 'CF_TOKEN_PROD') }}"
     cf_token_staging: "{{ lookup('env', 'CF_TOKEN_STAGING') }}"
   tasks:
