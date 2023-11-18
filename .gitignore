@@ -1,5 +1,7 @@
 terraform/harvester/prep/terraform.tfvars
 terraform/harvester/deploy-test-cluster/terraform.tfvars
+terraform/harvester/deploy-test-cluster/mgmt-cluster.tfvars
+terraform/harvester/deploy-test-cluster/dev-cluster.tfvars
 terraform/rancher/variables.tf
 
 terraform/harvester/prep/*.yaml

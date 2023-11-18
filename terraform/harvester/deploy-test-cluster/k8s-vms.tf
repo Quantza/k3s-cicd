@@ -6,8 +6,8 @@ resource "harvester_virtualmachine" "k8s-node" {
   name        = each.value.name
   namespace   = "default"
   description = each.value.desc
-  cpu         = each.value.cores
-  memory      = each.value.memory
+  cpu         = each.value.sockets * each.value.cores
+  memory      = "${each.value.memory}Mi"
 
   efi         = true
   secure_boot = true
