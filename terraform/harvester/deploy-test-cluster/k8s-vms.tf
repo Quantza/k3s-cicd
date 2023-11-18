@@ -21,6 +21,8 @@ resource "harvester_virtualmachine" "k8s-node" {
 
   network_interface {
     name           = data.harvester_network.vm_network.name
+    # bridge, masquerade
+    type           = "bridge" 
     wait_for_lease = true
   }
 
