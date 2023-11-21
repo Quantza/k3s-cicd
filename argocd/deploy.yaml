@@ -5,11 +5,31 @@
   vars:
   tasks:
     - name: Create Namespace (if doesn't exist)
-      command: tmpNamespace="argocd" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
-    
+      ansible.builtin.shell: |
+        tmpNamespace="argocd"
+        kubectl --kubeconfig=../k8s-home.yaml get namespace | grep -q "^$tmpNamespace " || kubectl --kubeconfig=../k8s-home.yaml create namespace $tmpNamespace
+
+        exit 0
     - name: Install manifest
-      command: kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-    
+      ansible.builtin.shell: |
+        kubectl --kubeconfig=../k8s-home.yaml apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+        exit 0
     - name: Patch service to LoadBalancer type
-      command: kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+      ansible.builtin.shell: |
+        kubectl --kubeconfig=../k8s-home.yaml patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
+        exit 0
+    - name: Display default pass for ArgoCD
+      ansible.builtin.shell: |
+        echo "Default pass for ArgoCD..."
+        kubectl --kubeconfig=../k8s-home.yaml -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
+        exit 0
+      register: shell_result_argocd_pass
+    - debug:
+        var: shell_result_argocd_pass.stdout_lines
+        
+    
+
 
