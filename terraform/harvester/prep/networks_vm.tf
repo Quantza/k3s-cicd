@@ -28,5 +28,25 @@ resource "harvester_network" "untrusted-vlan" {
   name      = var.untrusted-vlan.name
   namespace = var.untrusted-vlan.namespace
 
+  route_mode = "auto"
+  route_dhcp_server_ip = ""
+
   cluster_network_name = data.harvester_clusternetwork.mgmt.name
 }
+
+# resource "harvester_network" "cluster-vlan" {
+#   for_each  = toset(["2", "3"])
+#   name      = "cluster-vlan${each.key}"
+#   namespace = "harvester-public"
+
+#   vlan_id = each.key
+
+#   route_mode    = "manual"
+#   route_cidr    = "10.34.0.1/24"
+#   route_gateway = "10.34.0.1"
+
+#   cluster_network_name = harvester_clusternetwork.cluster-vlan.name
+#   depends_on = [
+#     harveterraform/harvesterster_clusternetwork.cluster-vlan
+#   ]
+# }
