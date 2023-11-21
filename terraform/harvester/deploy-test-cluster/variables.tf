@@ -41,6 +41,7 @@ variable "vms" {
     target_node = string
     desc        = string
     ip          = string
+    mac_addr    = string
     memory      = number
     cores       = number
     sockets     = number
