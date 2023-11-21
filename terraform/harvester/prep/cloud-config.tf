@@ -14,7 +14,7 @@ users:
     passwd: $6$tCgT7xBA.tJf62Mf$Lo7mC7QynUVu0b3CcQR0GP2ELOaNivVCCcWXwtR44SyDuf/MlpoHXimCMoRy1Dq4m7lpCeQy4Q1vaO//Z6wkx0
     ssh_authorized_keys:
       - >-
-        public_key content of harvester_ssh_key.vm-sshkey
+        ${harvester_ssh_key.vm-sshkey.public_key}
     lock_passwd: false
     shell: /bin/bash
 
@@ -58,7 +58,7 @@ users:
     passwd: $6$tCgT7xBA.tJf62Mf$Lo7mC7QynUVu0b3CcQR0GP2ELOaNivVCCcWXwtR44SyDuf/MlpoHXimCMoRy1Dq4m7lpCeQy4Q1vaO//Z6wkx0
     ssh_authorized_keys:
       - >-
-        public_key content of harvester_ssh_key.vm-sshkey
+        ${harvester_ssh_key.vm-sshkey.public_key}
     lock_passwd: false
     shell: /bin/bash
 package_update: true
