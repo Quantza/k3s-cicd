@@ -46,6 +46,7 @@ variable "vms" {
     cores       = number
     sockets     = number
     disk_size   = string
+    disk_source = string
     vmid        = string
   }))
   default = []
