@@ -1,14 +1,8 @@
-terraform/harvester/prep/*.tfvars
-terraform/harvester/prep/*.yaml
-terraform/harvester/prep/.terraform
-terraform/harvester/prep/.terraform.lock.hcl
-terraform/harvester/prep/terraform.tfstate*
-
-terraform/harvester/deploy-test-cluster/*.tfvars
-terraform/harvester/deploy-test-cluster/*.yaml
-terraform/harvester/deploy-test-cluster/.terraform
-terraform/harvester/deploy-test-cluster/.terraform.lock.hcl
-terraform/harvester/deploy-test-cluster/terraform.tfstate*
+terraform/harvester/*/*.tfvars
+terraform/harvester/*/*.yaml
+terraform/harvester/*/.terraform
+terraform/harvester/*/.terraform.lock.hcl
+terraform/harvester/*/terraform.tfstate*
 
 terraform/rancher/*.tfvars
 terraform/rancher/variables.tf
@@ -16,3 +10,5 @@ terraform/rancher/*.yaml
 terraform/rancher/.terraform
 terraform/rancher/.terraform.lock.hcl
 terraform/rancher/terraform.tfstate*
+
+k8s-dev.yaml
