@@ -7,8 +7,9 @@
     domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('algorisma.com', true) }}"
     cf_token_prod: "{{ lookup('env', 'CF_TOKEN_PROD') }}"
     cf_token_staging: "{{ lookup('env', 'CF_TOKEN_STAGING') }}"
+  gather_facts: true
   environment:
-    KUBECONFIG: "../k8s-dev.yaml"
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../k8s-dev.yaml', true) }}"
   tasks:
     - name: Add / Update certmanager helm repo
       ansible.builtin.shell: |

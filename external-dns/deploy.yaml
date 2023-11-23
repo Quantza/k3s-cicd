@@ -2,6 +2,7 @@
 - name: Deploy external-dns (k8s)
   hosts: localhost
   become: true
+  gather_facts: true
   vars:
     domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('algorisma.com', true) }}"
     domain_zone_id_prod: "{{ lookup('env', 'DOMAIN_ZONE_ID_PROD') | default('ac4650f932d9ca902affbcfc0ee53c30', true) }}"
@@ -9,7 +10,7 @@
     cf_api_key_prod: "{{ lookup('env', 'CF_API_KEY_PROD') }}"
     num_replicas: "{{ lookup('env', 'REPLICAS_EXTERNAL_DNS') | default('1', true) }}"
   environment:
-    KUBECONFIG: "../k8s-dev.yaml"
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../k8s-dev.yaml', true) }}"
   tasks:
     - name: Create RBAC rules + deployment manifest
       template:

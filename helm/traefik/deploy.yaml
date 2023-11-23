@@ -2,14 +2,15 @@
 - name: Deploy traefik (k8s/helm)
   hosts: localhost
   become: true
+  gather_facts: true
   vars:
     domain_zone_staging: "{{ lookup('env', 'DOMAIN_ZONE_STAGING') | default('algorisma.com', true) }}"
     domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('algorisma.com', true) }}"
     cf_token_prod: "{{ lookup('env', 'CF_TOKEN_PROD') }}"
     cf_token_staging: "{{ lookup('env', 'CF_TOKEN_STAGING') }}"
-    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('51', true) }}"
+    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('30', true) }}"
   environment:
-    KUBECONFIG: "../../k8s-dev.yaml"
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../k8s-dev.yaml', true) }}"
   tasks:
     - name: Add / Update traefik helm repo
       ansible.builtin.shell: |

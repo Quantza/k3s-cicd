@@ -2,8 +2,9 @@
 - name: Deploy argocd (k8s)
   hosts: localhost
   become: true
+  gather_facts: true
   environment:
-    KUBECONFIG: "../k8s-dev.yaml"
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../k8s-dev.yaml', true) }}"
   tasks:
     - name: Create Namespace (if doesn't exist)
       ansible.builtin.shell: |
