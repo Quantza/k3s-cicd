@@ -23,17 +23,11 @@ ansible-playbook deploy.yaml
 
 #
 
-cd ../helm/traefik
+cd ../helm/certmanager
 
 ansible-playbook deploy.yaml
 
-#
-
-cd ../certmanager
-
-ansible-playbook deploy.yaml
-
-cd configure
+cd configure-duckdns
 
 ansible-playbook deploy.yaml
 
@@ -41,7 +35,13 @@ cd ..
 
 #
 
-cd ../../external-dns
+cd ../../traefik/duckdns
+
+ansible-playbook deploy.yaml
+
+#
+
+cd ../../../external-dns
 
 ansible-playbook deploy.yaml
 
