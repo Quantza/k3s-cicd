@@ -1,3 +1,5 @@
+.vscode/
+
 terraform/harvester/*/*.tfvars
 terraform/harvester/*/*.yaml
 terraform/harvester/*/.terraform
