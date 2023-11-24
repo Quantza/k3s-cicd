@@ -22,8 +22,9 @@ resource "harvester_virtualmachine" "k8s-node" {
   network_interface {
     name           = data.harvester_network.vm_network.name
     network_name   = data.harvester_network.vm_network.id
+    mac_address    = each.value.mac_addr != "" ? each.value.mac_addr : null
     # bridge, masquerade
-    type           = "bridge" 
+    type           = "bridge"
     wait_for_lease = true
   }
 
