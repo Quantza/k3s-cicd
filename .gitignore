@@ -1,11 +1,5 @@
 .vscode/
 
-terraform/harvester/*/*.tfvars
-terraform/harvester/*/*.yaml
-terraform/harvester/*/.terraform
-terraform/harvester/*/.terraform.lock.hcl
-terraform/harvester/*/terraform.tfstate*
-
 terraform/rancher/*.tfvars
 terraform/rancher/variables.tf
 terraform/rancher/*.yaml
