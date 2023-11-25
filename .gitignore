@@ -7,4 +7,10 @@ terraform/rancher/.terraform
 terraform/rancher/.terraform.lock.hcl
 terraform/rancher/terraform.tfstate*
 
+terraform/harvester/*/*.tfvars
+terraform/harvester/*/*.yaml
+terraform/harvester/*/.terraform
+terraform/harvester/*/.terraform.lock.hcl
+terraform/harvester/*/terraform.tfstate*
+
 k8s-dev.yaml
