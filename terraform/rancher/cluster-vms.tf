@@ -21,7 +21,7 @@ EOF
     }]
 }
 EOF
-    ssh_user = var.vm_user.name
+    ssh_user = var.vm_user
     user_data = var.cloud-config-main-ubuntu22-04.user_data
   }
 }

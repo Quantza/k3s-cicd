@@ -1,7 +1,6 @@
 .vscode/
 
 terraform/rancher/*.tfvars
-terraform/rancher/variables.tf
 terraform/rancher/*.yaml
 terraform/rancher/.terraform
 terraform/rancher/.terraform.lock.hcl
