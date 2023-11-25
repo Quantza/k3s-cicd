@@ -1,37 +1,16 @@
-resource "rancher2_machine_config_v2" "mission-ctrl-hrv-etcd-v2" {
-  generate_name = "mission-ctrl-hrv-etcd-v2"
-  harvester_config {
-    vm_namespace = "default"
-    cpu_count = "2"
-    memory_size = "4"
-    disk_info = <<EOF
-{
-    "disks": [{
-        "name": "rootdisk",
-        "imageName": "${var.vm_os-image.namespace}/${var.vm_os-image.id}",
-        "size": 32,
-        "bootOrder": 1
-    }]
-}
-EOF
-    network_info = <<EOF
-{
-    "interfaces": [{
-        "networkName": "${var.main-vlan.namespace}/${var.main-vlan.name}"
-    }]
-}
-EOF
-    ssh_user = var.vm_user
-    user_data = var.cloud-config-main-ubuntu22-04.user_data
-  }
-}
+resource "rancher2_machine_config_v2" "k8s-node" {
 
-resource "rancher2_machine_config_v2" "mission-ctrl-hrv-cplane-v2" {
-  generate_name = "mission-ctrl-hrv-cplane-v2"
+  for_each = {
+    for vm in var.vms : vm.name => vm
+  }
+
+  generate_name = each.value.name
   harvester_config {
-    vm_namespace = "default"
-    cpu_count = "2"
-    memory_size = "6"
+    # "default"
+    vm_namespace = each.value.namespace
+
+    cpu_count = "${each.value.sockets * each.value.cores}"
+    memory_size = "${each.value.memory}Mi"
     disk_info = <<EOF
 {
     "disks": [{
@@ -39,39 +18,11 @@ resource "rancher2_machine_config_v2" "mission-ctrl-hrv-cplane-v2" {
         "imageName": "${var.vm_os-image.namespace}/${var.vm_os-image.id}",
         "size": 20,
         "bootOrder": 1
-    }]
-}
-EOF
-    network_info = <<EOF
-{
-    "interfaces": [{
-        "networkName": "${var.main-vlan.namespace}/${var.main-vlan.name}"
-    }]
-}
-EOF
-    ssh_user = var.vm_user.name
-    user_data = var.cloud-config-main-ubuntu22-04.user_data
-  }
-}
-
-resource "rancher2_machine_config_v2" "mission-ctrl-hrv-wrkr-v2" {
-  generate_name = "mission-ctrl-hrv-wrkr-v2"
-  harvester_config {
-    vm_namespace = "default"
-    cpu_count = "2"
-    memory_size = "6"
-    disk_info = <<EOF
-{
-    "disks": [{
-        "name": "rootdisk",
-        "imageName": "${var.vm_os-image.namespace}/${var.vm_os-image.id}",
-        "size": 64,
-        "bootOrder": 1
     },
     {
         "name": "extradisk",
-        "storageClassName": "harvester-longhorn",
-        "size": 16,
+        "storageClassName": "${each.value.disk_source}",
+        "size": "${each.value.disk_size}",
         "bootOrder": 2
     }]
 }
@@ -79,11 +30,14 @@ EOF
     network_info = <<EOF
 {
     "interfaces": [{
-        "networkName": "${var.main-vlan.namespace}/${var.main-vlan.name}"
+        "networkName": "${var.main-vlan.namespace}/${var.main-vlan.name}",
+        "macAddress": ${each.value.mac_addr != "" ? each.value.mac_addr : null},
+        "type": "bridge",
+        "waitForLease": true
     }]
 }
 EOF
-    ssh_user = var.vm_user.name
+    ssh_user = var.vm_user
     user_data = var.cloud-config-main-ubuntu22-04.user_data
   }
 }

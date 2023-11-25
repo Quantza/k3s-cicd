@@ -18,6 +18,23 @@ variable "cluster_def" {
   })
 }
 
+variable "vms" {
+  type = list(object({
+    name        = string
+    target_node = string
+    desc        = string
+    ip          = string
+    mac_addr    = string
+    memory      = number
+    cores       = number
+    sockets     = number
+    disk_size   = string
+    disk_source = string
+    vmid        = string
+  }))
+  default = []
+}
+
 variable "hrv_api" {
     description = "API key for Harvester Cluster"
 
