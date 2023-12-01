@@ -8,7 +8,7 @@
     domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('algorisma.com', true) }}"
     cf_token_prod: "{{ lookup('env', 'CF_TOKEN_PROD') }}"
     cf_token_staging: "{{ lookup('env', 'CF_TOKEN_STAGING') }}"
-    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('40', true) }}"
+    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('51', true) }}"
   environment:
     KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../../k8s-dev.yaml', true) }}"
   tasks:

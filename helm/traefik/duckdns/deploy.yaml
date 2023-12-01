@@ -7,7 +7,7 @@
     domain_zone_staging: "{{ lookup('env', 'DOMAIN_ZONE_STAGING') | default('quantza-dev.duckdns.org', true) }}"
     domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('quantza.duckdns.org', true) }}"
     api_token_duckdns: "{{ lookup('env', 'DUCKDNS_TOKEN') }}"
-    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('40', true) }}"
+    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('51', true) }}"
   environment:
     KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../../k8s-dev.yaml', true) }}"
   tasks:

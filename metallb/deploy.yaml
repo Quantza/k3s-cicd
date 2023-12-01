@@ -4,8 +4,8 @@
   become: true
   gather_facts: true
   vars:
-    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('40', true) }}"
-    lb_end_ip: "{{ lookup('env', 'LB_END_IP') | default('48', true) }}"
+    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('51', true) }}"
+    lb_end_ip: "{{ lookup('env', 'LB_END_IP') | default('75', true) }}"
   environment:
     KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../k8s-dev.yaml', true) }}"
   tasks:
