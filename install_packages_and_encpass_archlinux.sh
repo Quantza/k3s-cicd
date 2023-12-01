@@ -3,7 +3,7 @@
 set -e
 
 yay -Sy
-yay -S curl git kubectl helm ansible-core ansible
+yay -S curl git kubectl helm ansible-core ansible jq
 
 curl https://raw.githubusercontent.com/ahnick/encpass.sh/master/encpass.sh -o ./bin/encpass.sh
 chmod +x ./bin/encpass.sh

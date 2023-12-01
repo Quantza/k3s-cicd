@@ -10,7 +10,7 @@
     lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('51', true) }}"
   environment:
     KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../../k8s-dev.yaml', true) }}"
-  tasks:
+  tasks:    
     - name: Add / Update traefik helm repo
       ansible.builtin.shell: |
         helm repo add traefik https://helm.traefik.io/traefik
@@ -22,6 +22,14 @@
       ansible.builtin.shell: |
         tmpNamespace="traefik" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
         exit 0
+    
+    - name: Copy tls secret from 'cert-manager' to 'traefik' and 'production' namespaces
+      ansible.builtin.shell: |
+        kubectl get secret cert-manager-webhook-duckdns-webhook-tls -n cert-manager -o json | jq '{apiVersion,data,kind,metadata,type} | .metadata |= {"annotations", "name", "labels"}' | kubectl apply -n traefik -f -
+        kubectl get secret cert-manager-webhook-duckdns-webhook-tls -n cert-manager -o json | jq '{apiVersion,data,kind,metadata,type} | .metadata |= {"annotations", "name", "labels"}' | kubectl apply -n production -f -
+
+        exit 0
+    
     - name: Create Helm values yaml, for install/upgrade
       template:
         src: ../traefik-values.yaml.j2

@@ -21,4 +21,9 @@ spec:
           kind: TraefikService
       
   tls:
-    secretName: www-tls-certificate
+    secretName: cert-manager-webhook-duckdns-webhook-tls
+    # secretName: www-tls-certificate
+    # options:
+    #   name: cert-manager-webhook-duckdns-webhook-tls
+    #   namespace: traefik
+    

@@ -5,7 +5,7 @@ metadata:
   name: ingress-external
   namespace: production
   annotations:
-    kubernetes.io/ingress.class: traefik-external
+    kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.middlewares: default-default-headers@kubernetescrd
@@ -14,7 +14,7 @@ spec:
   tls:
     - hosts:
         - {{ domain_zone_prod }}
-      secretName: ingress-dns-tls
+      secretName: cert-manager-webhook-duckdns-webhook-tls
   rules:
     - host: "{{ domain_zone_prod }}"
       http:
