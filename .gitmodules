@@ -2,3 +2,8 @@
 	path = submodules/deployKF
 	url = https://github.com/deployKF/deployKF.git
 	branch = main
+[submodule "submodules/cert-manager-webhook-duckdns"]
+	path = submodules/cert-manager-webhook-duckdns
+	url = https://github.com/ebrianne/cert-manager-webhook-duckdns.git
+	branch = master
+	depth = 1
