@@ -1,0 +1,36 @@
+---
+- name: Configure deployed certmanager (k8s/helm)
+  hosts: localhost
+  become: true
+  gather_facts: true
+  vars:
+    domain_zone_staging: "{{ lookup('env', 'DOMAIN_ZONE_STAGING') | default('quantza-dev.duckdns.org', true) }}"
+    domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('quantza.duckdns.org', true) }}"
+    api_token_duckdns: "{{ lookup('env', 'DUCKDNS_TOKEN') }}"
+  environment:
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../../k8s-dev.yaml', true) }}"
+  tasks:
+    - name: Install cert-manager-webhook-duckdns and set up issuers.
+      ansible.builtin.shell: |
+        helm install cert-manager-webhook-duckdns \
+          --namespace cert-manager \
+          --set duckdns.token='{{ api_token_duckdns }}' \
+          --set clusterIssuer.production.create=true \
+          --set clusterIssuer.staging.create=true \
+          --set clusterIssuer.email=info@{{ domain_zone_prod }} \
+          --set logLevel=2 \
+          ebrianne.github.io/cert-manager-webhook-duckdns
+        
+        exit 0
+    - name: Create local certs manifest
+      template:
+        src: manifests/local_certs.yaml.j2
+        dest: /tmp/local_certs.yaml
+        mode: '0644'
+
+    - name: Apply local certs manifest
+      ansible.builtin.shell: |
+        kubectl apply -f /tmp/local_certs.yaml
+        
+        exit 0
+    

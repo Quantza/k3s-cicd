@@ -4,9 +4,9 @@ set -e
 
 echo "Starting..."
 
-chmod 0755 "$HOME"/.kube
-chmod go-r "$HOME"/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
+# chmod 0755 "$HOME"/.kube
+# chmod go-r "$HOME"/.kube/k8s-dev.yaml
+# sudo chown $(id -u):$(id -g) $HOME/.kube/k8s-dev.yaml
 
 ROOT_DIR="$PWD"
 
@@ -23,19 +23,25 @@ ansible-playbook deploy.yaml
 
 #
 
-cd ../helm/traefik
+cd ../helm/certmanager
+
+ansible-playbook deploy.yaml
+
+cd configure-duckdns
+
+ansible-playbook deploy.yaml
+
+cd ..
+
+#
+
+cd ../../traefik/duckdns
 
 ansible-playbook deploy.yaml
 
 #
 
-cd ../certmanager
-
-ansible-playbook deploy.yaml
-
-#
-
-cd ../../external-dns
+cd ../../../external-dns
 
 ansible-playbook deploy.yaml
 

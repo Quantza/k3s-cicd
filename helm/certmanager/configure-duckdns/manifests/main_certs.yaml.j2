@@ -1,0 +1,28 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ domain_zone_prod }}
+  namespace: services
+spec:
+  secretName: production-tls
+  issuerRef:
+    name: cert-manager-webhook-duckdns-production
+    kind: ClusterIssuer
+  dnsNames:
+  - "{{ domain_zone_prod }}"
+  - "*.{{ domain_zone_prod }}"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ domain_zone_staging }}
+  namespace: services
+spec:
+  secretName: staging-tls
+  issuerRef:
+    name: cert-manager-webhook-duckdns-staging
+    kind: ClusterIssuer
+  dnsNames:
+  - "{{ domain_zone_staging }}"
+  - "*.{{ domain_zone_staging }}"

@@ -14,7 +14,6 @@ spec:
   tls:
     - hosts:
         - {{ domain_zone_prod }}
-        - harbor.{{ domain_zone_prod }}
       secretName: ingress-dns-tls
   rules:
     - host: "{{ domain_zone_prod }}"
@@ -27,13 +26,3 @@ spec:
                 name: welcome-nginx
                 port:
                   number: 80
-    - host: "harbor.{{ domain_zone_prod }}"
-      http:
-        paths:
-          - path: /
-            pathType: Exact
-            backend:
-              service:
-                name: harbor
-                port:
-                  number: 443

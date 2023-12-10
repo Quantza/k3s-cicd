@@ -2,8 +2,11 @@
 - name: Deploy switchboard (k8s)
   hosts: localhost
   become: true
+  gather_facts: true
   vars:
     domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('algorisma.com', true) }}"
+  environment:
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../k8s-dev.yaml', true) }}"
   tasks:
     - name: Create Helm values yaml, for install/upgrade
       template:

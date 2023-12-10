@@ -1,35 +1,16 @@
 ---
-- name: Deploy certmanager (k8s/helm)
+- name: Configure deployed certmanager (k8s/helm)
   hosts: localhost
   become: true
+  gather_facts: true
   vars:
     domain_zone_staging: "{{ lookup('env', 'DOMAIN_ZONE_STAGING') | default('algorisma.com', true) }}"
     domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('algorisma.com', true) }}"
     cf_token_prod: "{{ lookup('env', 'CF_TOKEN_PROD') }}"
     cf_token_staging: "{{ lookup('env', 'CF_TOKEN_STAGING') }}"
+  environment:
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../../k8s-dev.yaml', true) }}"
   tasks:
-    - name: Add / Update certmanager helm repo
-      ansible.builtin.shell: |
-        helm repo add jetstack https://charts.jetstack.io
-        helm repo update
-
-        exit 0
-    
-    - name: Create Namespace (if doesn't exist)
-      ansible.builtin.shell: |
-        tmpNamespace="cert-manager" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
-
-        exit 0
-    - name: Install CRD(s)
-      ansible.builtin.shell: |
-        kubectl --kubeconfig=../../k8s-home.yaml apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.1/cert-manager.crds.yaml
-
-        exit 0
-    - name: Install/upgrade chart
-      ansible.builtin.shell: |
-        helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --values=cert-values.yaml --version v1.13.1
-        
-        exit 0
     - name: Create certificate issuers manifest
       template:
         src: manifests/issuer.yaml.j2
@@ -38,7 +19,7 @@
 
     - name: Apply certificate issuers manifest
       ansible.builtin.shell: |
-        kubectl --kubeconfig=../../k8s-home.yaml apply -f /tmp/issuer.yaml
+        kubectl apply -f /tmp/issuer.yaml
         
         exit 0
     - name: Create resolver/api manifest
@@ -49,7 +30,7 @@
 
     - name: Apply resolver/api manifest
       ansible.builtin.shell: |
-        kubectl --kubeconfig=../../k8s-home.yaml apply -f /tmp/resolver_api.yaml
+        kubectl apply -f /tmp/resolver_api.yaml
         
         exit 0    
     - name: Create local certs manifest
@@ -60,6 +41,6 @@
 
     - name: Apply local certs manifest
       ansible.builtin.shell: |
-        kubectl --kubeconfig=../../k8s-home.yaml apply -f /tmp/local_certs.yaml
+        kubectl apply -f /tmp/local_certs.yaml
         
         exit 0
