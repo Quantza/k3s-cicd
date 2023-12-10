@@ -8,7 +8,7 @@
     domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('quantza.duckdns.org', true) }}"
     api_token_duckdns: "{{ lookup('env', 'DUCKDNS_TOKEN') }}"
   environment:
-    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../../k8s-home.yaml', true) }}"
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../../k8s-dev.yaml', true) }}"
   tasks:
     - name: Install cert-manager-webhook-duckdns and set up issuers.
       ansible.builtin.shell: |

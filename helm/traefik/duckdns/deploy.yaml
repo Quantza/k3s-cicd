@@ -9,7 +9,7 @@
     api_token_duckdns: "{{ lookup('env', 'DUCKDNS_TOKEN') }}"
     lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('30', true) }}"
   environment:
-    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../k8s-home.yaml', true) }}"
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../k8s-dev.yaml', true) }}"
   tasks:
     - name: Add / Update traefik helm repo
       ansible.builtin.shell: |

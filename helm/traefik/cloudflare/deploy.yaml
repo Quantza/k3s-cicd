@@ -10,7 +10,7 @@
     cf_token_staging: "{{ lookup('env', 'CF_TOKEN_STAGING') }}"
     lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('30', true) }}"
   environment:
-    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../rke2-mgmt-config.yaml', true) }}"
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../k8s-dev.yaml', true) }}"
   tasks:
     - name: Add / Update traefik helm repo
       ansible.builtin.shell: |
