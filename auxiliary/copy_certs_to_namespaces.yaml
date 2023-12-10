@@ -1,0 +1,23 @@
+---
+- name: Copy certs to namespaces
+  hosts: localhost
+  become: true
+  gather_facts: true
+  vars:
+  environment:
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../k8s-dev.yaml', true) }}"
+  tasks:
+    - name: Create Namespaces (if do not exist)
+      ansible.builtin.shell: |
+        tmpNamespace="traefik" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
+        tmpNamespace="production" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
+        
+        exit 0
+    - name: Copy tls secret from 'cert-manager' to 'traefik', 'cattle-system', 'production' and 'default' namespaces
+      ansible.builtin.shell: |
+        kubectl get secret cert-manager-webhook-duckdns-webhook-tls -n cert-manager -o json | jq '{apiVersion,data,kind,metadata,type} | .metadata |= {"annotations", "name", "labels"}' | kubectl apply -n traefik -f -
+        kubectl get secret cert-manager-webhook-duckdns-webhook-tls -n cert-manager -o json | jq '{apiVersion,data,kind,metadata,type} | .metadata |= {"annotations", "name", "labels"}' | kubectl apply -n default -f -
+        kubectl get secret cert-manager-webhook-duckdns-webhook-tls -n cert-manager -o json | jq '{apiVersion,data,kind,metadata,type} | .metadata |= {"annotations", "name", "labels"}' | kubectl apply -n production -f -
+
+        exit 0
+

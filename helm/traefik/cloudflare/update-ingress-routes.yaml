@@ -1,0 +1,25 @@
+---
+- name: Deploy traefik (k8s/helm)
+  hosts: localhost
+  become: true
+  gather_facts: true
+  vars:
+    domain_zone_staging: "{{ lookup('env', 'DOMAIN_ZONE_STAGING') | default('quantza-dev.duckdns.org', true) }}"
+    domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('quantza.duckdns.org', true) }}"
+    cf_token_prod: "{{ lookup('env', 'CF_TOKEN_PROD') }}"
+    cf_token_staging: "{{ lookup('env', 'CF_TOKEN_STAGING') }}"
+    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('51', true) }}"
+  environment:
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../../rke2-mgmt-config.yaml', true) }}"
+  tasks:
+    - name: Create ingress routes manifest
+      template:
+        src: manifests/ingress-routes.yaml.j2
+        dest: /tmp/ingress-routes.yaml
+        mode: '0644'
+
+    - name: Apply ingress routes manifest
+      ansible.builtin.shell: |
+        kubectl apply -f /tmp/ingress-routes.yaml --wait
+        exit 0
+    

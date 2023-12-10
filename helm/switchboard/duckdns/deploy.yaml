@@ -4,13 +4,14 @@
   become: true
   gather_facts: true
   vars:
-    domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('algorisma.com', true) }}"
+    domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('quantza.duckdns.org', true) }}"
+    cluster_issuer: "{{ lookup('env', 'CLUSTER_ISSUER') | default('cert-manager-webhook-duckdns-production', true) }}"
   environment:
     KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../k8s-dev.yaml', true) }}"
   tasks:
     - name: Create Helm values yaml, for install/upgrade
       template:
-        src: switchboard-values.yaml.j2
+        src: ../manifests/switchboard-values.yaml.j2
         dest: /tmp/switchboard-values.yaml
         mode: '0644'
     

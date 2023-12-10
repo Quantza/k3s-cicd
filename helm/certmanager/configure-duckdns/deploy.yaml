@@ -19,7 +19,7 @@
           --set clusterIssuer.staging.create=true \
           --set clusterIssuer.email=info@{{ domain_zone_prod }} \
           --set logLevel=2 \
-          ebrianne.github.io/cert-manager-webhook-duckdns
+          ../../../submodules/cert-manager-webhook-duckdns/deploy/cert-manager-webhook-duckdns
         
         exit 0
     - name: Create local certs manifest
