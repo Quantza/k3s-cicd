@@ -8,12 +8,9 @@
     cf_token_prod: "{{ lookup('env', 'CF_TOKEN_PROD') }}"
     cf_token_staging: "{{ lookup('env', 'CF_TOKEN_STAGING') }}"
     lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('51', true) }}"
+  environment:
+    KUBECONFIG: "../../k8s-dev.yaml"
   tasks:
-    # - name: Add / Update traefik helm repo
-    #   ansible.builtin.shell: |
-    #     export KUBE_CONFIG=../../k8s-home.yaml
-
-    #     exit 0
     - name: Add / Update traefik helm repo
       ansible.builtin.shell: |
         helm repo add traefik https://helm.traefik.io/traefik
@@ -23,7 +20,7 @@
     
     - name: Create Namespace (if doesn't exist)
       ansible.builtin.shell: |
-        tmpNamespace="traefik" && kubectl --kubeconfig=../../k8s-home.yaml get namespace | grep -q "^$tmpNamespace " || kubectl --kubeconfig=../../k8s-home.yaml create namespace $tmpNamespace
+        tmpNamespace="traefik" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
         exit 0
     - name: Create Helm values yaml, for install/upgrade
       template:
@@ -38,7 +35,7 @@
         exit 0
     - name: Apply middleware manifest
       ansible.builtin.shell: |
-        kubectl apply --kubeconfig=../../k8s-home.yaml -f manifests/middleware.yaml
+        kubectl apply -f manifests/middleware.yaml
         
         exit 0
     - name: Create ingress manifest
@@ -49,7 +46,7 @@
 
     - name: Apply ingress manifest
       ansible.builtin.shell: |
-        kubectl apply --kubeconfig=../../k8s-home.yaml -f /tmp/ingress.yaml --wait
+        kubectl apply -f /tmp/ingress.yaml --wait
         
         exit 0
     - name: Create ingress routes manifest
@@ -60,17 +57,17 @@
 
     - name: Apply ingress routes manifest
       ansible.builtin.shell: |
-        kubectl apply --kubeconfig=../../k8s-home.yaml -f /tmp/ingress-routes.yaml --wait
+        kubectl apply -f /tmp/ingress-routes.yaml --wait
         
         exit 0
     - name: Create Namespace for nginx welcome service (if doesn't exist)
       ansible.builtin.shell: |
-        tmpNamespace="welcome-nginx" && kubectl --kubeconfig=../../k8s-home.yaml get namespace | grep -q "^$tmpNamespace " || kubectl --kubeconfig=../../k8s-home.yaml create namespace $tmpNamespace
+        tmpNamespace="welcome-nginx" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
         
         exit 0
     - name: Create nginx ingress welcome service (test)
       ansible.builtin.shell: |
-        kubectl apply --kubeconfig=../../k8s-home.yaml -f manifests/ingress-service-nginx.yaml --wait
+        kubectl apply -f manifests/ingress-service-nginx.yaml --wait
         
         exit 0
     

@@ -8,6 +8,8 @@
     cf_api_email_prod: "{{ lookup('env', 'CF_API_EMAIL_PROD') }}"
     cf_api_key_prod: "{{ lookup('env', 'CF_API_KEY_PROD') }}"
     num_replicas: "{{ lookup('env', 'REPLICAS_EXTERNAL_DNS') | default('1', true) }}"
+  environment:
+    KUBECONFIG: "../k8s-dev.yaml"
   tasks:
     - name: Create RBAC rules + deployment manifest
       template:
@@ -17,19 +19,19 @@
     
     - name: Create Namespace (if doesn't exist)
       ansible.builtin.shell: |
-        tmpNamespace="external-dns" && kubectl --kubeconfig=../k8s-home.yaml get namespace | grep -q "^$tmpNamespace " || kubectl --kubeconfig=../k8s-home.yaml create namespace $tmpNamespace
+        tmpNamespace="external-dns" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
 
         exit 0
 
     - name: Apply CRD(s)
       ansible.builtin.shell: |
-        kubectl --kubeconfig=../k8s-home.yaml apply -f https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/docs/contributing/crd-source/crd-manifest.yaml
+        kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/docs/contributing/crd-source/crd-manifest.yaml
 
         exit 0
 
     - name: Apply RBAC rules + deployment manifest
       ansible.builtin.shell: |
-        kubectl --kubeconfig=../k8s-home.yaml apply -f /tmp/external-dns-deployment.yaml
+        kubectl apply -f /tmp/external-dns-deployment.yaml
 
         exit 0
     
