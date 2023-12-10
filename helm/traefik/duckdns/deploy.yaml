@@ -79,7 +79,3 @@
         kubectl apply -f ../manifests/ingress-service-nginx.yaml --wait
         
         exit 0
-<<<<<<< HEAD
-=======
-    
->>>>>>> ef9084c (Refactor out cert-manager and traefik deployments into separated cloudflare and duckdns cases (as subfolders). Remove references to 'harbor' service.)
