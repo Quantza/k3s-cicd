@@ -49,7 +49,7 @@
         exit 0
     - name: Create ingress manifest
       template:
-        src: ../manifests/ingress.yaml.j2
+        src: manifests/ingress.yaml.j2
         dest: /tmp/ingress.yaml
         mode: '0644'
 
