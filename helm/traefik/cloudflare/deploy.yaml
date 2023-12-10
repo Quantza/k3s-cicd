@@ -71,4 +71,3 @@
         kubectl apply -f ../manifests/ingress-service-nginx.yaml --wait
         
         exit 0
-    
