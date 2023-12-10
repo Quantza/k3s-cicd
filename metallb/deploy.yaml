@@ -4,20 +4,13 @@
   become: true
   gather_facts: true
   vars:
-    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('51', true) }}"
-    lb_end_ip: "{{ lookup('env', 'LB_END_IP') | default('75', true) }}"
+    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('30', true) }}"
+    lb_end_ip: "{{ lookup('env', 'LB_END_IP') | default('49', true) }}"
   environment:
-<<<<<<< HEAD
     KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../k8s-dev.yaml', true) }}"
   tasks:
     - name: Install LoadBalancer
       command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.11/config/manifests/metallb-native.yaml --wait
-=======
-    KUBECONFIG: "../k8s-dev.yaml"
-  tasks:
-    - name: Install LoadBalancer
-      command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.11/config/manifests/metallb-native.yaml
->>>>>>> a56a67d (Fix end ip typo in metallb ansible playbook; set KUBECONFIG env. var. in each playbook to locally provided kubeconfig at root of repo (k8s-dev.yaml); split deployment of certmanager from its configuration via two playbooks.)
     
     - name: Create service pool manifest
       template:
