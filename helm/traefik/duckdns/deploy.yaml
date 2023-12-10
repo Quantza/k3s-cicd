@@ -4,13 +4,12 @@
   become: true
   gather_facts: true
   vars:
-    domain_zone_staging: "{{ lookup('env', 'DOMAIN_ZONE_STAGING') | default('algorisma.com', true) }}"
-    domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('algorisma.com', true) }}"
-    cf_token_prod: "{{ lookup('env', 'CF_TOKEN_PROD') }}"
-    cf_token_staging: "{{ lookup('env', 'CF_TOKEN_STAGING') }}"
+    domain_zone_staging: "{{ lookup('env', 'DOMAIN_ZONE_STAGING') | default('quantza-dev.duckdns.org', true) }}"
+    domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('quantza.duckdns.org', true) }}"
+    api_token_duckdns: "{{ lookup('env', 'DUCKDNS_TOKEN') }}"
     lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('30', true) }}"
   environment:
-    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../k8s-dev.yaml', true) }}"
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../k8s-home.yaml', true) }}"
   tasks:
     - name: Add / Update traefik helm repo
       ansible.builtin.shell: |
@@ -25,7 +24,7 @@
         exit 0
     - name: Create Helm values yaml, for install/upgrade
       template:
-        src: traefik-values.yaml.j2
+        src: ../traefik-values.yaml.j2
         dest: /tmp/traefik-values.yaml
         mode: '0644'
     
@@ -36,12 +35,12 @@
         exit 0
     - name: Apply middleware manifest
       ansible.builtin.shell: |
-        kubectl apply -f manifests/middleware.yaml
+        kubectl apply -f ../manifests/middleware.yaml
         
         exit 0
     - name: Create ingress manifest
       template:
-        src: manifests/ingress.yaml.j2
+        src: ../manifests/ingress.yaml.j2
         dest: /tmp/ingress.yaml
         mode: '0644'
 
