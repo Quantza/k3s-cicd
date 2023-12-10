@@ -14,3 +14,5 @@ terraform/harvester/*/.terraform.lock.hcl
 terraform/harvester/*/terraform.tfstate*
 
 k8s-dev.yaml
+rke2-mgmt-rancher-local-config.yaml
+mission-ctrl-hrv-config.yaml
