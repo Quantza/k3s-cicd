@@ -36,7 +36,11 @@
         exit 0
     - name: Apply middleware manifest
       ansible.builtin.shell: |
+<<<<<<< HEAD:helm/traefik/cloudflare/deploy.yaml
         kubectl apply -f ../manifests/middleware.yaml
+=======
+        kubectl apply -f manifests/middleware.yaml
+>>>>>>> a56a67d (Fix end ip typo in metallb ansible playbook; set KUBECONFIG env. var. in each playbook to locally provided kubeconfig at root of repo (k8s-dev.yaml); split deployment of certmanager from its configuration via two playbooks.):helm/traefik/deploy.yaml
         
         exit 0
     - name: Create ingress manifest
