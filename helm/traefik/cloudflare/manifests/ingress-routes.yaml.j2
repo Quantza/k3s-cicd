@@ -1,44 +1,69 @@
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: my-harbor
-  namespace: traefik
-  annotations:
-    kubernetes.io/ingress.class: traefik-external
-spec:
-  entryPoints:
-      - websecure
-  routes:
-    # - match: Host(`www.{{ domain_zone_prod }}`) && PathPrefix(`/registry`)
-    - match: Host(`www.registry.{{ domain_zone_prod }}`)
-      kind: Rule
-      services:
-        - name: harbor
-          namespace: harbor
-  tls:
-    secretName: www-tls-certificate
----
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: dashboard
   namespace: traefik
   annotations:
-    kubernetes.io/ingress.class: traefik-external
+    kubernetes.io/ingress.class: traefik
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+  - kind: Rule
+    match: Host(`traefik.{{ domain_zone_prod }}`)
+    # match: Host(`www.{{ domain_zone_prod }}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+    middlewares:
+    - name: traefik-dashboard-basicauth
+      namespace: traefik
+    services:
+    - name: api@internal
+      kind: TraefikService
+  tls:
+    secretName: www-tls-certificate
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: welcome
+  namespace: production
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+  - kind: Rule
+    match: Host(`welcome.{{ domain_zone_prod }}`)
+    middlewares:
+    - name: default-headers
+      namespace: default
+    services:
+    - name: welcome-nginx
+      port: 80    
+  tls:
+    secretName: www-tls-certificate
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: welcome
+  namespace: production
+  annotations:
+    kubernetes.io/ingress.class: traefik
 spec:
   entryPoints:
     - websecure
   routes:
-    # - match: Host(`www.{{ domain_zone_prod }}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
-    - match: Host(`www.traefik.{{ domain_zone_prod }}`)
-      kind: Rule
-      middlewares:
-        - name: traefik-dashboard-basicauth
-          namespace: traefik
-      services:
-        - name: api@internal
-          kind: TraefikService
-      
+  - kind: Rule
+    match: Host(`registry.{{ domain_zone_prod }}`)
+    # match: Host(`www.{{ domain_zone_prod }}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+    middlewares:
+    - name: default-headers
+      namespace: default
+    services:
+    - name: harbor
+      namespace: harbor   
   tls:
     secretName: www-tls-certificate
