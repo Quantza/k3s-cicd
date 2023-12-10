@@ -1,0 +1,23 @@
+---
+- name: Deploy switchboard (k8s)
+  hosts: localhost
+  become: true
+  gather_facts: true
+  vars:
+    domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('algorisma.com', true) }}"
+    cluster_issuer: "{{ lookup('env', 'CLUSTER_ISSUER') | default('letsencrypt-production', true) }}"
+  environment:
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../k8s-dev.yaml', true) }}"
+  tasks:
+    - name: Create Helm values yaml, for install/upgrade
+      template:
+        src: ../manifests/switchboard-values.yaml.j2
+        dest: /tmp/switchboard-values.yaml
+        mode: '0644'
+    
+    - name: Install/upgrade
+      ansible.builtin.shell: |
+        helm upgrade -i switchboard oci://ghcr.io/borchero/charts/switchboard --create-namespace --namespace switchboard -f /tmp/switchboard-values.yaml
+
+        exit 0
+    

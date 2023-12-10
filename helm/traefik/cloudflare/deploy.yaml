@@ -8,9 +8,9 @@
     domain_zone_prod: "{{ lookup('env', 'DOMAIN_ZONE_PROD') | default('algorisma.com', true) }}"
     cf_token_prod: "{{ lookup('env', 'CF_TOKEN_PROD') }}"
     cf_token_staging: "{{ lookup('env', 'CF_TOKEN_STAGING') }}"
-    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('30', true) }}"
+    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('40', true) }}"
   environment:
-    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../k8s-dev.yaml', true) }}"
+    KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../../../k8s-dev.yaml', true) }}"
   tasks:
     - name: Add / Update traefik helm repo
       ansible.builtin.shell: |
@@ -49,7 +49,7 @@
         exit 0
     - name: Create ingress manifest
       template:
-        src: ../manifests/ingress.yaml.j2
+        src: manifests/ingress.yaml.j2
         dest: /tmp/ingress.yaml
         mode: '0644'
 
@@ -71,11 +71,12 @@
         exit 0
     - name: Create Namespace for nginx welcome service (if doesn't exist)
       ansible.builtin.shell: |
-        tmpNamespace="welcome-nginx" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
+        tmpNamespace="production" && kubectl get namespace | grep -q "^$tmpNamespace " || kubectl create namespace $tmpNamespace
         
         exit 0
     - name: Create nginx ingress welcome service (test)
       ansible.builtin.shell: |
-        kubectl apply -f manifests/ingress-service-nginx.yaml --wait
+        kubectl apply -f ../manifests/ingress-service-nginx.yaml --wait
         
         exit 0
+    

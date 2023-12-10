@@ -39,6 +39,10 @@ cd ../../traefik/duckdns
 
 ansible-playbook deploy.yaml
 
+cd ../../switchboard/duckdns
+
+ansible-playbook deploy.yaml
+
 #
 
 cd ../../../external-dns

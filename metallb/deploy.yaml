@@ -4,13 +4,13 @@
   become: true
   gather_facts: true
   vars:
-    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('30', true) }}"
-    lb_end_ip: "{{ lookup('env', 'LB_END_IP') | default('49', true) }}"
+    lb_start_ip: "{{ lookup('env', 'LB_START_IP') | default('40', true) }}"
+    lb_end_ip: "{{ lookup('env', 'LB_END_IP') | default('48', true) }}"
   environment:
     KUBECONFIG: "{{ lookup('env', 'KUBECONFIG') | default('../k8s-dev.yaml', true) }}"
   tasks:
     - name: Install LoadBalancer
-      command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.11/config/manifests/metallb-native.yaml
+      command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.11/config/manifests/metallb-native.yaml --wait
     
     - name: Create service pool manifest
       template:

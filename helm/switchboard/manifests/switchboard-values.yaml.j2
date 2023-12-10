@@ -52,7 +52,7 @@ integrations:
       spec:
         issuerRef:
           kind: "ClusterIssuer"
-          name: "letsencrypt-production"
+          name: {{ cluster_issuer }}
   externalDNS:
     # -- Whether the external-dns integration should be enabled. If enabled `DNSEndpoint` resources
     #    are created by Switchboard. Setting this to `true` requires specifying the target via
